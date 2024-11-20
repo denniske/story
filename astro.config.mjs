@@ -30,6 +30,9 @@ export default defineConfig({
             server: { }
         }
     }),
+    ...(env.STORYBLOK_IS_PREVIEW === 'yes' && {
+        adapter: vercel()
+    }),
     // ...(env.STORYBLOK_ENV === 'development' && {
     //     vite: {
     //         plugins: [basicSsl()],
@@ -38,5 +41,4 @@ export default defineConfig({
     //         }
     //     }
     // }),
-    adapter: vercel()
 });
