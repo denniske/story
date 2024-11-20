@@ -18,14 +18,20 @@ export default defineConfig({
                 feature: 'storyblok/Feature',
                 grid: 'storyblok/Grid',
                 teaser: 'storyblok/Teaser',
+                config: 'storyblok/Config',
+                hero: 'storyblok/Hero',
+                'popular-articles': 'storyblok/PopularArticles',
+                'all-articles': 'storyblok/AllArticles',
+                article: 'storyblok/Article',
             },
         }),
         tailwind()
     ],
     vite: {
-        plugins: [basicSsl()],
+        // plugins: [basicSsl()],
+        plugins: [],
         server: {
-            https: true,
+            // https: true,
         },
     },
 })
