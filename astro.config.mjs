@@ -5,6 +5,7 @@ import tailwind from '@astrojs/tailwind';
 // import basicSsl from '@vitejs/plugin-basic-ssl';
 import vercel from "@astrojs/vercel/serverless";
 const env = loadEnv('', process.cwd(), 'STORYBLOK');
+import aws from "astro-sst";
 
 // https://astro.build/config
 export default defineConfig({
@@ -23,7 +24,7 @@ export default defineConfig({
             article: 'storyblok/Article'
         }
     }), tailwind()],
-    output: env.STORYBLOK_IS_PREVIEW === 'yes' ? 'server' : 'static', // 'hybrid' | 'static' | 'server'
+    output: env.STORYBLOK_IS_PREVIEW === 'yes' ? 'hybrid' : 'static', // 'hybrid' | 'static' | 'server'
     ...(env.STORYBLOK_ENV === 'development' && {
         vite: {
             plugins: [],
@@ -31,7 +32,8 @@ export default defineConfig({
         }
     }),
     ...(env.STORYBLOK_IS_PREVIEW === 'yes' && {
-        adapter: vercel()
+        // adapter: vercel(),
+        adapter: aws(),
     }),
     // ...(env.STORYBLOK_ENV === 'development' && {
     //     vite: {
