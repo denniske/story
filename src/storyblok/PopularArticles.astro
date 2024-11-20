@@ -2,7 +2,7 @@
 import ArticleCard from '../components/ArticleCard.astro'
 import { storyblokEditable } from '@storyblok/astro'
 
-const { blok } = Astro.props
+const { language, blok } = Astro.props
 let articles = blok.articles
 ---
 
@@ -14,11 +14,10 @@ let articles = blok.articles
         {
             articles?.length &&
             articles.map((article) => {
-                console.log('article', article);
                 article.content.slug = article.slug
                 return (
                         <li>
-                            <ArticleCard article={article.content} />
+                            <ArticleCard language={language} article={article.content} />
                         </li>
                 )
             })

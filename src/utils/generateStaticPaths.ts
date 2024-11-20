@@ -1,14 +1,11 @@
----
 import { useStoryblokApi } from '@storyblok/astro'
-import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
-import BaseLayout from '../layouts/BaseLayout.astro'
+import isPreview from './isPreview'
+import { languages } from './langs'
 
-export async function getStaticPaths() {
-    //You can also have this in an utils file so it can be reused.
-    let languages = ['en', 'es']
+export default async function generateStaticPaths() {
     const storyblokApi = useStoryblokApi()
     const links = await storyblokApi.getAll('cdn/links', {
-        version: 'draft',
+        version: isPreview() ? 'draft' : 'published',
     })
     let paths = []
     links
@@ -37,20 +34,3 @@ export async function getStaticPaths() {
         })
     return paths
 }
-
-const { slug, language, langSwitch } = Astro.props
-const storyblokApi = useStoryblokApi()
-const { data } = await storyblokApi.get(
-    `cdn/stories/${slug === undefined ? 'home' : slug}`,
-    {
-        version: 'draft',
-        resolve_relations: ['popular-articles.articles'],
-        language,
-    }
-)
-const story = data.story
----
-
-<BaseLayout langSwitch={langSwitch} language={language}>
-    <StoryblokComponent language={language} blok={story.content} />
-</BaseLayout>

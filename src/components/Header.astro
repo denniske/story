@@ -1,30 +1,26 @@
 ---
-import { useStoryblokApi } from '@storyblok/astro'
-const storyblokApi = useStoryblokApi()
-const { data } = await storyblokApi.get('cdn/stories/config', {
-    version: 'draft',
-    resolve_links: 'url',
-})
-const headerMenu = data?.story?.content?.header_menu
+import { languages, getTransLink } from '../utils/langs'
+const { language, langSwitch } = Astro.props
 ---
 
 <header class="w-full h-24 bg-[#f7f6fd]">
     <div class="container h-full mx-auto flex items-center justify-between">
-        <a href="/">
+        <a href={getTransLink(language, '/')}>
             <h1 class="text-[#50b0ae] text-3xl font-bold">Storyblok Astro</h1>
         </a>
-        <nav>
-            <ul class="flex space-x-8 text-lg font-bold">
-                {
-                    headerMenu.map((menu) => (
-                            <li>
-                                <a href={`/${menu.link.cached_url}`} class="hover:text-[#50b0ae]">
-                                    {menu.link.story.name}
-                                </a>
-                            </li>
-                    ))
-                }
-            </ul>
+        <nav class="flex space-x-8 text-lg font-bold">
+            <a href={getTransLink(language, '/blog')} class="hover:text-[#50b0ae]">Blog</a>
+            <a href={getTransLink(language, '/about')} class="hover:text-[#50b0ae]">About</a>
+            {
+                languages.map((lang) => (
+                        <a
+                                class={`lang-toggle hover:bg-gray-200 px-2 ${lang === language ? 'bg-gray-200' : ''}`}
+                                href={langSwitch[lang]}
+                        >
+                            {lang}
+                        </a>
+                ))
+            }
         </nav>
     </div>
 </header>
